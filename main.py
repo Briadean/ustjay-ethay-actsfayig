@@ -1,5 +1,4 @@
 import os
-
 import requests
 from flask import Flask
 from bs4 import BeautifulSoup
@@ -19,13 +18,17 @@ def get_fact():
 
 @app.route('/')
 def home():
-    piglatinizer_url = "https://hidden-journey-62459.herokuapp.com/"
     fact = get_fact().strip()
-    response = requests.post(piglatinizer_url,
+    piglatinize_url = 'https://hidden-journey-62459.herokuapp.com/piglatinize/'
+
+    response = requests.post(piglatinize_url,
                              data={'input_text': fact},
-                             allow_redirects=False)
-    location_header = response.headers['Location']
-    return requests.get(location_header).text
+                             allow_redirects=False,)
+
+    location_header = response.headers
+    location_header = location_header['Location']
+
+    return "<a href='{}'>{}</a>".format(location_header, location_header)
 
 
 if __name__ == "__main__":
